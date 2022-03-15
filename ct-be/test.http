@@ -1,0 +1,60 @@
+############################################## USERS ##############################################
+
+### Get all users
+GET http://localhost:7005/users HTTP/1.1
+
+### Get single user
+GET http://localhost:7005/users/0ab8c67b-34ab-48c9-9ade-0da5975ea8ab HTTP/1.1
+
+### Not Found
+GET http://localhost:7005/users/11111111-2222-3333-4444-555555555555 HTTP/1.1
+
+### Update user
+PUT http://localhost:7005/users/8478fc36-5bbb-410a-bc0f-20fe1e4daf3d HTTP/1.1
+Content-Type: application/json
+
+{
+  "name":"WEB Userovic"
+}
+
+### Create user
+POST http://localhost:7005/users HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "REST Userovic druhy"
+}
+
+
+############################################## TASKS ##############################################
+
+### Create task with assignee
+POST http://localhost:7005/tasks HTTP/1.1
+Content-Type: application/json
+
+{
+  "name":"REST moja uloha",
+  "creator": {
+    "_id":"512f9786-2411-47a8-a732-a53a31ac4958",
+    "name":"REST Userovic"
+  },
+  "description":"raz dva tri",
+  "assignee":{
+    "_id":"6fdc3482-bde8-4c0f-a8df-a723e197d305",
+    "name":"REST Userovic druhy"
+  }
+}
+
+
+
+
+
+########################################## REFERENCE DATA #########################################
+
+### Get all reference data
+GET http://localhost:7005/reference_data HTTP/1.1
+
+
+
+
+

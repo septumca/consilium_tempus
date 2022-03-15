@@ -1,0 +1,19 @@
+[package]
+name = "ct-be"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+mongodb = { version = "2.1.0", features = ["bson-chrono-0_4", "bson-uuid-0_8"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+tokio = { version = "1.17.0", features = ["full"] }
+uuid = { version = "0.8", features = ["v4", "serde"] }
+futures = "0.3"
+axum = "0.4.6"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+tower-http = { version = "0.2.3", features = ["cors", "trace"] }
