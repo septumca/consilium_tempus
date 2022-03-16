@@ -100,13 +100,13 @@ pub async fn read_all<T>() -> Result<Json<Vec<T>>, PrError>
 where T: Serialize + DeserializeOwned + Unpin + std::marker::Send + Sync + WithCollectionName,
 {
   let coll = get_collection::<T>().await?;
-  let mut cur = coll.find(None, None).await?;
-  let mut entries: Vec<T> = vec![];
-  while let Some(e) = cur.next().await {
-    entries.push(e.expect("should be an entries"));
-  }
+  let cur = coll.find(None, None).await?;
+  let entries: mongodb::error::Result<Vec<T>> = cur.collect::<Vec<mongodb::error::Result<T>>>().await.into_iter().collect();
 
-  Ok::<Json<Vec<T>>, PrError>(Json(entries))
+  match entries {
+    Ok(e) => Ok::<Json<Vec<T>>, PrError>(Json(e)),
+    Err(e) => Err::<Json<Vec<T>>, PrError>(PrError::from(e))
+  }
 }
 
 pub async fn put<'de, D, T>(Path(id): Path<String>, Json(data): Json<D>) -> Result<(), PrError>

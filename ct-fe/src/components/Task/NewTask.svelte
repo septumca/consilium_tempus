@@ -16,7 +16,7 @@
   let name: string = "";
   let description: string = "";
 
-  const onCreate = async () => {
+  const handleCreate = async () => {
     let data: CreateTask = { name, creator };
     let assignedUser = $userStore.find(e => e._id === assignedUserId);
     if (description) {
@@ -54,7 +54,7 @@
       bind:value={assignedUserId}
     />
   </div>
-  <button on:click={onCreate} disabled={name === ""}>
+  <button on:click={handleCreate} disabled={name === ""}>
     <div>🗓️✔️ Create new task</div>
   </button>
 </div>

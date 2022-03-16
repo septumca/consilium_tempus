@@ -1,8 +1,10 @@
+use axum::{extract::Path, Json};
 use serde::{Serialize, Deserialize};
 use chrono::prelude::*;
 use mongodb::{bson::{doc, Uuid, Document}, options::{UpdateModifications}};
+use futures::stream::{StreamExt};
 
-use crate::{utils::WithCollectionName, users::User};
+use crate::{utils::{WithCollectionName, get_collection, PrError}, users::User};
 
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -69,5 +71,26 @@ impl From<UpdateTaskData> for UpdateModifications {
       doc.insert("status", s);
     }
     UpdateModifications::Document(doc! { "$set": doc})
+  }
+}
+
+pub async fn read_users_tasks(Path(id): Path<String>) -> Result<Json<Vec<Task>>, PrError> {
+  let coll = get_collection::<Task>().await?;
+  let id = Uuid::parse_str(id)?;
+  let filter = doc! {
+    "$or": [
+      { "creator._id": id },
+      { "$and": [
+        { "assignee": { "$exists": true }},
+        { "assignee._id": id }
+      ]}
+    ]
+  };
+  let cur = coll.find(filter, None).await?;
+  let entries: mongodb::error::Result<Vec<Task>> = cur.collect::<Vec<mongodb::error::Result<Task>>>().await.into_iter().collect();
+
+  match entries {
+    Ok(e) => Ok::<Json<Vec<Task>>, PrError>(Json(e)),
+    Err(e) => Err::<Json<Vec<Task>>, PrError>(PrError::from(e))
   }
 }

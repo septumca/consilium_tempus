@@ -45,8 +45,9 @@ Content-Type: application/json
   }
 }
 
-
-
+### Get Tasks for user
+GET http://localhost:7005/tasks/user/512f9786-2411-47a8-a732-a53a31ac4958 HTTP/1.1
+Content-Type: application/json
 
 
 ########################################## REFERENCE DATA #########################################

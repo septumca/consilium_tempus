@@ -30,6 +30,7 @@ async fn main() {
 
         .route("/tasks", post(utils::create::<tasks::CreateTaskData, tasks::Task>))
         .route("/tasks", get(utils::read_all::<tasks::Task>))
+        .route("/tasks/user/:id", get(tasks::read_users_tasks))
         .route("/tasks/:id", get(utils::read::<tasks::Task>))
         .route("/tasks/:id", put(utils::put::<tasks::UpdateTaskData, tasks::Task>))
         .route("/tasks/:id", delete(utils::delete::<tasks::Task>))

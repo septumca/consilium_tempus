@@ -1,35 +1,39 @@
 <script lang="ts">
-  import taskStore from "../../lib/stores/task";
   import { useFocus } from "svelte-navigator";
-  import TaskView from "./TaskView.svelte";
+  import type { Task } from "src/lib/types/cttypes.type";
+  import TaskViewDraggable from "./TaskViewDraggable.svelte";
+
+  export let tasks: Array<Task> = [];
+  export let columns: Array<{ name: string, code: number }> = [];
+  $: tasksPerColumn = columns.reduce((a, c) => {
+    return {
+      ...a,
+      [c.code]: tasks.filter(t => t.status === c.code),
+    }
+  }, {})
 
   const registerFocus = useFocus();
 </script>
 
-<div use:registerFocus class="container">
-  {#each $taskStore as t}
-    <TaskView data={t} />
+<div use:registerFocus class="container" style="grid-template-columns: repeat({columns.length}, 1fr);">
+  {#each columns as c}
+    <div>
+      <div><span>{c.name}</span></div>
+      {#each tasksPerColumn[c.code] as t}
+        <div>
+          <TaskViewDraggable data={t} />
+        </div>
+      {/each}
+    </div>
   {/each}
 </div>
 
 <style>
   .container {
     display: grid;
-    grid-template-columns: 1fr;
-    margin: 0px 8px;
-    column-gap: 16px;
-    row-gap: 16px;
-  }
-
-  @media (min-width: 40em) {
-    .container {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  @media (min-width: 64em) {
-    .container {
-      grid-template-columns: 1fr 1fr 1fr;
-    }
+    grid-template-rows: 1fr;
+    margin: 0rem 0.5rem;
+    column-gap: 1rem;
+    row-gap: 1rem;
   }
 </style>

@@ -56,13 +56,11 @@ export const readAllUsers = async () => {
 }
 
 export const updateUser = async (id: string, data: User) => {
-  let r = await fetch(`${USER_API}/${id}`, { ...PUT_OPTIONS, body: JSON.stringify(data) });
-  return r.json();
+  let _ = await fetch(`${USER_API}/${id}`, { ...PUT_OPTIONS, body: JSON.stringify(data) });
 }
 
 export const deleteUser = async (id: string) => {
-  let r = await fetch(`${USER_API}/${id}`, DELETE_OPTIONS);
-  return r.json();
+  let _ = await fetch(`${USER_API}/${id}`, DELETE_OPTIONS);
 }
 
 export const createTask = async (data: CreateTask) => {
@@ -80,14 +78,17 @@ export const readAllTasks = async () => {
   return r.json();
 }
 
-export const updateTask = async (id: string, data: Task) => {
-  let r = await fetch(`${TASKS_API}/${id}`, { ...PUT_OPTIONS, body: JSON.stringify(data) });
+export const readUsersTasks = async (id: string) => {
+  let r = await fetch(`${TASKS_API}/user/${id}`, GET_OPTIONS);
   return r.json();
 }
 
+export const updateTask = async (id: string, data: Task) => {
+  let _ = await fetch(`${TASKS_API}/${id}`, { ...PUT_OPTIONS, body: JSON.stringify(data) });
+}
+
 export const deleteTask = async (id: string) => {
-  let r = await fetch(`${TASKS_API}/${id}`, DELETE_OPTIONS);
-  return r.json();
+  let _ = await fetch(`${TASKS_API}/${id}`, DELETE_OPTIONS);
 }
 
 export const readRefData = async () => {

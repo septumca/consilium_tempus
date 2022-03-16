@@ -13,7 +13,7 @@
   $: userList = $userStore.map(({ _id, name }) => ({ label: name, id: _id }));
   let selectedUser: string = "";
 
-  const onLogin = () => {
+  const handleLogin = () => {
     const u = $userStore.find(e => e._id === selectedUser) || null;
 
     if (u === null) {
@@ -36,7 +36,7 @@
         bind:value={selectedUser}
       />
     </div>
-    <button on:click={onLogin} disabled={selectedUser === ""}>
+    <button on:click={handleLogin} disabled={selectedUser === ""}>
       <div>🔑 Login</div>
     </button>
   </div>

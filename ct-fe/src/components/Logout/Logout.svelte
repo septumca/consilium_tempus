@@ -6,14 +6,14 @@
 
   const navigate = useNavigate();
 
-  const onLogout = () => {
+  const handleLogout = () => {
     clearLoggedUser();
     navigate("/login", { replace: true });
   }
 </script>
 
 <div>
-  <button on:click={onLogout}>
+  <button on:click={handleLogout}>
     <div>🚪 Logout</div>
   </button>
 </div>

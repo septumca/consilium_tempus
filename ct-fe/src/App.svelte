@@ -12,6 +12,7 @@
   import PrivateRoute from "./components/General/PrivateRoute.svelte";
   import TaskList from "./components/Task/TaskList.svelte";
   import NewTask from "./components/Task/NewTask.svelte";
+  import Home from "./components/Home/Home.svelte";
 
   onMount(async () => {
     const ft: Promise<Array<Task>> = readAllTasks();
@@ -42,10 +43,10 @@
           <Logout />
         </div>
         <Route path="/">
-          HOME
+          <Home />
         </Route>
         <Route path="tasks">
-          <TaskList />
+          <TaskList tasks={$taskStore} columns={$refDataStore.statuses} />
           <Link to="new">New task</Link>
         </Route>
         <Route path="tasks/new">
