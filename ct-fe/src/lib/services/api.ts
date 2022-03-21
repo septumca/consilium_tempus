@@ -1,4 +1,4 @@
-import type { CreateTask, Task, User } from "../types/cttypes.type"
+import type { CreateTask, Task, UpdateTaskData, User } from "../types/cttypes.type"
 
 const API: string = "http://localhost:7005";
 const TASKS_API: string = `${API}/tasks`;
@@ -83,7 +83,7 @@ export const readUsersTasks = async (id: string) => {
   return r.json();
 }
 
-export const updateTask = async (id: string, data: Task) => {
+export const updateTask = async (id: string, data: UpdateTaskData) => {
   let _ = await fetch(`${TASKS_API}/${id}`, { ...PUT_OPTIONS, body: JSON.stringify(data) });
 }
 

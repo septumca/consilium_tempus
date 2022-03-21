@@ -1,7 +1,7 @@
 <script lang="ts">
   import { useFocus } from "svelte-navigator";
-  import type { Task } from "src/lib/types/cttypes.type";
-  import TaskViewDraggable from "./TaskViewDraggable.svelte";
+  import type { Task } from "../../lib/types/cttypes.type";
+  import TaskColumn from "./TaskColumn.svelte";
 
   export let tasks: Array<Task> = [];
   export let columns: Array<{ name: string, code: number }> = [];
@@ -17,23 +17,17 @@
 
 <div use:registerFocus class="container" style="grid-template-columns: repeat({columns.length}, 1fr);">
   {#each columns as c}
-    <div>
-      <div><span>{c.name}</span></div>
-      {#each tasksPerColumn[c.code] as t}
-        <div>
-          <TaskViewDraggable data={t} />
-        </div>
-      {/each}
-    </div>
+    <TaskColumn code={c.code} name={c.name} tasks={tasksPerColumn[c.code]} />
   {/each}
 </div>
 
 <style>
   .container {
     display: grid;
-    grid-template-rows: 1fr;
+    grid-template-rows: 5fr;
     margin: 0rem 0.5rem;
     column-gap: 1rem;
     row-gap: 1rem;
+    height: 85vh; /* TODO: use more general grid layout on the components around */
   }
 </style>

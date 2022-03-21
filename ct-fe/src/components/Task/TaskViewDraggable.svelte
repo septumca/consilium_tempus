@@ -3,7 +3,18 @@
   import TaskPreviewBase from "./TaskViewPreviewBase.svelte";
 
   export let data: Task;
+
+  const handleDragStart = (e) => {
+    e.dataTransfer.dropEffect = "move";
+    e.dataTransfer.setData("task-id", data._id);
+  }
 </script>
 
-<TaskPreviewBase data={data} />
+<div
+  draggable=true
+  on:dragstart={handleDragStart}
+>
+  <TaskPreviewBase data={data} />
+</div>
+
 

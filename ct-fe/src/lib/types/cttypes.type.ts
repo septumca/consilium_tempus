@@ -20,6 +20,13 @@ export type Task = {
   assignee: User | null,
 }
 
+export type UpdateTaskData = {
+  name?: string,
+  description?: string,
+  status?: number
+  assignee?: User | null,
+}
+
 export type RefData = {
   statuses: Array<{ name: string, code: number }>
 }

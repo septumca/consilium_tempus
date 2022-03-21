@@ -49,6 +49,18 @@ Content-Type: application/json
 GET http://localhost:7005/tasks/user/512f9786-2411-47a8-a732-a53a31ac4958 HTTP/1.1
 Content-Type: application/json
 
+### Get All Tasks
+GET http://localhost:7005/tasks HTTP/1.1
+Content-Type: application/json
+
+### Update state of task
+PUT http://localhost:7005/tasks/86867706-191e-43a1-9e9b-ba37ed51c10b HTTP/1.1
+Content-Type: application/json
+
+{
+  "status": 1
+}
+
 
 ########################################## REFERENCE DATA #########################################
 
