@@ -1,26 +1,27 @@
 <script lang="ts">
-  import { useLocation, useNavigate } from "svelte-navigator";
+  import { Link, useLocation, useNavigate } from "svelte-navigator";
   import userStore from "../../lib/stores/user";
   import { useFocus } from "svelte-navigator";
   import { setLoggedUser } from "../../lib/services/auth";
   import Select from "../General/Select.svelte";
+  import { login } from "../../lib/services/api";
+  import sha256 from 'crypto-js/sha256';
 
   const registerFocus = useFocus();
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  $: userList = $userStore.map(({ _id, name }) => ({ label: name, id: _id }));
-  let selectedUser: string = "";
+  let user: string = "";
+  let password: string = "";
 
-  const handleLogin = () => {
-    const u = $userStore.find(e => e._id === selectedUser) || null;
+  const handleLogin = async () => {
+    const r = await login({
+      name: user,
+      password: sha256(password).toString()
+    });
 
-    if (u === null) {
-      return;
-    }
-
-    setLoggedUser(u);
+    setLoggedUser(r);
     const from = ($location.state && $location.state.from) || "/";
     navigate(from, { replace: true });
   }
@@ -30,15 +31,19 @@
   <div>
     <div use:registerFocus>Login as</div>
     <div>
-      <Select
-        id="login-user-list"
-        data={userList}
-        bind:value={selectedUser}
-      />
+      <div>
+        Name: <input id="login-user-name" bind:value={user} />
+      </div>
+      <div>
+        Password: <input id="login-user-password" bind:value={password} />
+      </div>
     </div>
-    <button on:click={handleLogin} disabled={selectedUser === ""}>
+    <button on:click={handleLogin} disabled={user === "" || password === ""}>
       <div>🔑 Login</div>
     </button>
+    <div>
+      <Link to="/register">Register</Link>
+    </div>
   </div>
 </div>
 

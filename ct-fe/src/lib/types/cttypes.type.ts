@@ -3,6 +3,22 @@ export type User = {
   name: string,
 }
 
+export type RegistrationData = {
+  name: string,
+  password: string,
+}
+
+export type LoginRequest = {
+  name: string,
+  password: string,
+}
+
+export type LoginResponse = {
+  _id: string,
+  name: string,
+  token: string,
+}
+
 export type CreateTask = {
   name: string,
   description?: string,

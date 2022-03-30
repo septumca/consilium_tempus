@@ -4,7 +4,7 @@ use chrono::prelude::*;
 use mongodb::{bson::{doc, Uuid, Document}, options::{UpdateModifications}};
 use futures::stream::{StreamExt};
 
-use crate::{utils::{WithCollectionName, get_collection, PrError}, users::User};
+use crate::{utils::{WithCollectionName, get_collection, PrError}, users::{User, UserPublicData}};
 
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -13,9 +13,9 @@ pub struct Task {
   name: String,
   description: Option<String>,
   status: i32,
-  creator: User,
+  creator: UserPublicData,
   created_on: DateTime<Utc>,
-  assignee: Option<User>,
+  assignee: Option<UserPublicData>,
 }
 
 impl WithCollectionName for Task {
@@ -28,8 +28,8 @@ impl WithCollectionName for Task {
 pub struct CreateTaskData {
   name: String,
   description: Option<String>,
-  creator: User,
-  assignee: Option<User>,
+  creator: UserPublicData,
+  assignee: Option<UserPublicData>,
 }
 
 impl From<CreateTaskData> for Task {

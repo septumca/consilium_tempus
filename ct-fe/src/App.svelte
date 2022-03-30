@@ -13,6 +13,7 @@
   import TaskList from "./components/Task/TaskList.svelte";
   import NewTask from "./components/Task/NewTask.svelte";
   import Home from "./components/Home/Home.svelte";
+import Register from "./components/Login/Register.svelte";
 
   onMount(async () => {
     const ft: Promise<Array<Task>> = readAllTasks();
@@ -20,6 +21,9 @@
     const fr: Promise<RefData> = readRefData();
 
     const [t, u, r] = await Promise.all([ft, fu, fr]);
+    console.info('TASKS: ', t);
+    console.info('USERS: ', u);
+    console.info('REFDATA: ', r);
     taskStore.set(t);
     userStore.set(u);
     refDataStore.set(r);
@@ -29,6 +33,10 @@
 <main>
   <Router>
     <div>
+      <Route path="register">
+        <Register />
+      </Route>
+
       <Route path="login">
         <Login />
       </Route>

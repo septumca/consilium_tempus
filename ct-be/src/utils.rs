@@ -11,7 +11,9 @@ pub trait WithCollectionName {
 pub enum PrError {
   DB(String),
   Server(String),
-  NotFound(String)
+  NotFound(String),
+  Unauthorized(String),
+  Conflict(String),
 }
 
 impl IntoResponse for PrError {
@@ -33,6 +35,18 @@ impl IntoResponse for PrError {
         (
           StatusCode::NOT_FOUND,
           format!("{} - {}", "Not Found", msg)
+        )
+      },
+      PrError::Unauthorized(msg) => {
+        (
+          StatusCode::NOT_FOUND,
+          format!("{} - {}", "Unauthorized", msg)
+        )
+      },
+      PrError::Conflict(msg) => {
+        (
+          StatusCode::CONFLICT,
+          format!("{} - {}", "Conflict", msg)
         )
       }
     };

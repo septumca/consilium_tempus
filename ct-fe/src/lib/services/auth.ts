@@ -1,19 +1,17 @@
-import type { User } from "../types/cttypes.type";
+import type { LoginResponse, User } from "../types/cttypes.type";
 
 const LOCALSTORAGE_USER = "ct-user";
 
-export const setLoggedUser = (user: User) => {
+export const setLoggedUser = (user: LoginResponse) => {
   localStorage.setItem(LOCALSTORAGE_USER, JSON.stringify(user));
-}
-
-export const getLoggedUser = (): User => {
-  return JSON.parse(localStorage.getItem(LOCALSTORAGE_USER));
 }
 
 export const clearLoggedUser = () => {
   localStorage.setItem(LOCALSTORAGE_USER, null);
 }
 
-export const isUserLogged = (): boolean => {
-  return localStorage.getItem(LOCALSTORAGE_USER) !== null;
-}
+export const getLoggedUser = (): LoginResponse => JSON.parse(localStorage.getItem(LOCALSTORAGE_USER));
+
+export const isUserLogged = (): boolean => localStorage.getItem(LOCALSTORAGE_USER) !== null;
+
+export const getToken = (): string => getLoggedUser().token;

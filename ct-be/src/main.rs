@@ -1,7 +1,7 @@
 use axum::{
     http::Method,
     routing::{get, post, delete, put},
-    Router,
+    Router, middleware,
 };
 use tower_http::cors::{Any, CorsLayer};
 use tower_http::trace::TraceLayer;
@@ -9,6 +9,7 @@ use std::{net::SocketAddr};
 use tokio::signal;
 
 mod utils;
+mod auth;
 mod users;
 mod tasks;
 mod reference_data;
@@ -21,8 +22,13 @@ async fn main() {
         .allow_headers(Any)
         .allow_origin(Any);
 
-    let app = Router::new()
-        .route("/users", post(utils::create::<users::CreateUserData, users::User>))
+    let public = Router::new()
+        .route("/register", post(users::create))
+        .route("/authentificate", post(users::authentificate));
+
+
+    let private = Router::new()
+        // .route("/users", post(utils::create::<users::CreateUserData, users::User>))
         .route("/users", get(utils::read_all::<users::User>))
         .route("/users/:id", get(utils::read::<users::User>))
         .route("/users/:id", put(utils::put::<users::UpdateUserData, users::User>))
@@ -36,7 +42,11 @@ async fn main() {
         .route("/tasks/:id", delete(utils::delete::<tasks::Task>))
 
         .route("/reference_data", get(reference_data::read))
+        .route_layer(middleware::from_fn(auth::auth));
 
+    let app = Router::new()
+        .merge(public)
+        .merge(private)
         .layer(TraceLayer::new_for_http())
         .layer(cors);
 
