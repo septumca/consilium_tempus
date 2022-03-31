@@ -53,9 +53,9 @@ export const register = async (data: RegistrationData) => {
   return r.json();
 }
 
-export const login = async (data: LoginRequest): Promise<LoginResponse> => {
+export const login = async (data: LoginRequest): Promise<{ status:number, data: LoginResponse }> => {
   let r = await fetch(`${API}/authentificate`, { ...POST_OPTIONS, body: JSON.stringify(data) });
-  return r.json();
+  return { status: r.status, data: await r.json() as LoginResponse };
 }
 
 export const readSingleUser = async (id: string) => {

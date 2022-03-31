@@ -1,11 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import Login from "./components/Login/Login.svelte";
-  import Logout from "./components/Logout/Logout.svelte";
-  import type { RefData, Task } from "./lib/types/cttypes.type";
-  import type { User } from "./lib/types/cttypes.type";
-  import { readAllTasks, readAllUsers, readRefData } from "./lib/services/api";
-  import userStore from "./lib/stores/user";
   import taskStore from "./lib/stores/task";
   import refDataStore from "./lib/stores/refdata";
   import { Link, Route, Router } from "svelte-navigator";
@@ -13,21 +7,8 @@
   import TaskList from "./components/Task/TaskList.svelte";
   import NewTask from "./components/Task/NewTask.svelte";
   import Home from "./components/Home/Home.svelte";
-import Register from "./components/Login/Register.svelte";
-
-  onMount(async () => {
-    const ft: Promise<Array<Task>> = readAllTasks();
-    const fu: Promise<Array<User>> = readAllUsers();
-    const fr: Promise<RefData> = readRefData();
-
-    const [t, u, r] = await Promise.all([ft, fu, fr]);
-    console.info('TASKS: ', t);
-    console.info('USERS: ', u);
-    console.info('REFDATA: ', r);
-    taskStore.set(t);
-    userStore.set(u);
-    refDataStore.set(r);
-  });
+  import Register from "./components/Login/Register.svelte";
+  import MainMenu from "./components/MainMenu/MainMenu.svelte";
 </script>
 
 <main>
@@ -42,14 +23,7 @@ import Register from "./components/Login/Register.svelte";
       </Route>
 
       <PrivateRoute path="/*">
-        <div class="navbar">
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="tasks">Tasks</Link>
-            <Link to="users">Users</Link>
-          </nav>
-          <Logout />
-        </div>
+        <MainMenu />
         <Route path="/">
           <Home />
         </Route>
@@ -59,13 +33,6 @@ import Register from "./components/Login/Register.svelte";
         </Route>
         <Route path="tasks/new">
           <NewTask />
-        </Route>
-        <Route path="users/*">
-          USERS
-          <Link to="new">New user</Link>
-        </Route>
-        <Route path="users/new">
-          NEW USER
         </Route>
       </PrivateRoute>
 
@@ -78,12 +45,6 @@ import Register from "./components/Login/Register.svelte";
 
   :root {
     font-family: 'Roboto', sans-serif;
-  }
-
-  .navbar {
-    border-bottom: 0.2rem solid rgb(0, 134, 187);
-    padding-bottom: 0.5rem;
-    margin-bottom: 0.5rem;
   }
 
   :global(input) {

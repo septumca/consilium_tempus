@@ -1,4 +1,4 @@
-import type { LoginResponse, User } from "../types/cttypes.type";
+import type { LoginResponse } from "../types/cttypes.type";
 
 const LOCALSTORAGE_USER = "ct-user";
 
